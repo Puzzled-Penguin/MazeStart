@@ -1,0 +1,13 @@
+﻿  framework.cpp
+  main.cpp
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(140,38): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(140,26): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(145,38): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(145,26): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(150,38): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(150,26): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(154,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\Maze\main.cpp(155,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+  LINK : E:\GitHub\c-MazeGame\Maze\Maze\x64\Debug\Maze.exe not found or not built by the last incremental link; performing full link
+  Maze.vcxproj -> E:\GitHub\c-MazeGame\Maze\Maze\x64\Debug\Maze.exe
