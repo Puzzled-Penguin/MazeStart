@@ -10,7 +10,6 @@
 #include "Framework.h"
 using namespace std;
 
-
 // Screen dimensions
 int gScreenWidth{ 800 };
 int gScreenHeight{ 600 };
@@ -22,24 +21,9 @@ int gTimeDelayMS{ 100 };
 constexpr int kMazeColumnsX{ 20 };
 constexpr int kMazeRowsY{ 20 };
 
-int playerX;
-int playerY;
-
-/*
-	2 Dimensional Arrays
-	You can think of these as being an array of arrays
-	
-	The maze has kMazeColumnsX columns across (20 by default) represented by an array
-	We then have kMazeRowsY (20) of these arrays, one for each row
-	
-	Columns and rows can be confusing so we tend to prefer working with x and y
-	x is the horizontal axis (columns) across and y is the vertical axis (rows) down.
-
-	Each single item is called a cell. 
-	
-	E.g. to output the value of the cell at 16 X (column 16) and 1 Y (row 1) we would write:
-	cout << map[1][16] << endl; // outputs G
-*/
+int playerX = 0;
+int playerY = 0;
+bool canMove = true;
 
 char map[kMazeRowsY][kMazeColumnsX] = {
 	// 20 columns (x axis) by 20 rows (y axis)
@@ -66,58 +50,108 @@ char map[kMazeRowsY][kMazeColumnsX] = {
 	{ 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W' },	//Y19
 };
 
-void canMoveThere()
+void drawMaze()
 {
-	EKeyPressed keypressed = GetLastKeyPressed();
+	for (size_t CellY = 0; CellY < kMazeRowsY; CellY++) // Rows
+	{
+		for (size_t CellX = 0; CellX < kMazeColumnsX; CellX++) // Columns
+		{
+			switch (map[CellY][CellX])
+			{
+			case 'W':
+				//Black Wall
+				ChangeColour(0, 0, 0, 255);
+				DrawRectangle(CellX * 40, CellY * 30, 40, 30);
+				break;
+			case '.':
+				//White Empty
+				ChangeColour(255, 255, 255, 255);
+				DrawRectangle(CellX * 40, CellY * 30, 40, 30);
+				break;
+			case 'G':
+				//Red Goal
+				ChangeColour(255, 0, 0, 255);
+				DrawRectangle(CellX * 40, CellY * 30, 40, 30);
+				break;
+			}
+		}
+	}
+}
+
+void drawPlayer()
+{
+	//Blue Player
+	ChangeColour(0, 0, 255, 255);
+	DrawRectangle(playerX * 40, playerY * 30, 40, 30);
+}
+
+void initializePlayer()
+{
+	for (size_t CellY = 0; CellY < kMazeRowsY; CellY++) // Rows
+	{
+		for (size_t CellX = 0; CellX < kMazeColumnsX; CellX++) // Columns
+		{
+			if (map[CellY][CellX] == 'P')
+			{
+				//Blue Player
+				playerX = CellX;
+				playerY = CellY;
+				map[CellY][CellX] = '.';
+				break;
+			}
+		}
+	}
+}
+
+void canMoveThere(EKeyPressed keypressed)
+{
 	switch (keypressed)
 	{
 	case EKeyPressed::eNone:
 		break;
 	case EKeyPressed::eLeft:
-		
+		if (map[playerY][playerX - 1] == 'G') { cout << "Win" << endl; }
+		if (map[playerY][playerX - 1] != '.' && map[playerY][playerX - 1] != 'G') { canMove = false; }
 		break;
 	case EKeyPressed::eUp:
-		if (map[playerY - 1][playerX])
-		{
-
-		}
+		if (map[playerY - 1][playerX] == 'G') { cout << "Win" << endl; }
+		if (map[playerY - 1][playerX] != '.' && map[playerY - 1][playerX] != 'G') { canMove = false; }
 		break;
 	case EKeyPressed::eRight:
-		
+		if (map[playerY][playerX + 1] == 'G') { cout << "Win" << endl; }
+		if (map[playerY][playerX + 1] != '.' && map[playerY][playerX + 1] != 'G') { canMove = false; }
 		break;
 	case EKeyPressed::eDown:
-		
-
+		if (map[playerY + 1][playerX] == 'G') { cout << "Win" << endl; }
+		if (map[playerY + 1][playerX] != '.' && map[playerY + 1][playerX] != 'G') { canMove = false; }
 		break;
 	default:
 		break;
 	}
-	
 }
 
 void movement()
 {
 	EKeyPressed keypressed = GetLastKeyPressed();
-
 	switch (keypressed)
 	{
 	case EKeyPressed::eNone:
 		break;
 	case EKeyPressed::eLeft:
-		cout << "Left" << endl;
-		playerX--;
+		canMoveThere(keypressed);
+		if (canMove) { playerX--; }
 		break;
 	case EKeyPressed::eUp:
-		cout << "Up" << endl;
-		playerY--;
+		canMoveThere(keypressed);
+		if (canMove) { playerY--; }
 		break;
 	case EKeyPressed::eRight:
-		cout << "Right" << endl;
-		playerX++;
+		canMoveThere(keypressed);
+		if (canMove) { playerX++; }
 		break;
 	case EKeyPressed::eDown:
-		cout << "Down" << endl;
-		playerY++;
+		canMoveThere(keypressed);
+		if (canMove) { playerY++; }
 		break;
 	default:
 		break;
@@ -126,41 +160,13 @@ void movement()
 
 int main()
 {
+	initializePlayer();
 	while (UpdateFramework())
 	{
-		for (size_t CellY = 0; CellY < kMazeRowsY; CellY++) // Rows
-		{
-			for (size_t CellX = 0; CellX < kMazeColumnsX; CellX++) // Columns
-			{
-				switch (map[CellY][CellX])
-				{
-				case 'W':
-					//Black Wall
-					ChangeColour(0, 0, 0, 255);
-					DrawRectangle(CellX * 40, CellY * 30, 40, 30);
-					break;
-				case '.':
-					//White Empty
-					ChangeColour(255, 255, 255, 255);
-					DrawRectangle(CellX * 40, CellY * 30, 40, 30);
-					break;
-				case 'G':
-					//Red Goal
-					ChangeColour(255, 0, 0, 255);
-					DrawRectangle(CellX * 40, CellY * 30, 40, 30);
-					break;
-				case 'P':
-					//Blue Player
-					int pPosX = CellX + playerX;
-					int pPosY = CellY + playerY;
-					ChangeColour(0, 0, 255, 255);
-					DrawRectangle(pPosX * 40, pPosY * 30, 40, 30);
-					break;
-				}
-			}
-		}
+		drawMaze();
+		drawPlayer();
 		movement();
+		canMove = true;
 	}
-
 	return 0;
 }

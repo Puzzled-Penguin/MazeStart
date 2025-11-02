@@ -1,0 +1,10 @@
+﻿  main.cpp
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(64,37): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(64,25): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(69,37): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(69,25): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(74,37): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(74,25): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(97,15): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHub\c-MazeGame\Maze\Maze\main.cpp(98,15): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Maze.vcxproj -> E:\GitHub\c-MazeGame\Maze\x64\Debug\Maze.exe
