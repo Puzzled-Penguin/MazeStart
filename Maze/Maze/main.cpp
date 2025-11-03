@@ -6,6 +6,7 @@
 #include <vector>
 #include <time.h>
 #include <stdio.h>
+#include <cstdlib>
 
 #include "Framework.h"
 using namespace std;
@@ -103,6 +104,57 @@ void initializePlayer()
 	}
 }
 
+void gameWon()
+{
+	cout << "Win" << endl;
+	StartClock();
+
+	for (size_t CellY = 0; CellY < kMazeRowsY; CellY++) // Rows
+	{
+		for (size_t CellX = 0; CellX < kMazeColumnsX; CellX++) // Columns
+		{
+			if (map[CellY][CellX] == 'G')
+			{
+				map[CellY][CellX] = '.';
+			}
+		}
+	}
+	// Loop through empty spaces
+	int emptySpaces = 0;
+	for (size_t CellY = 0; CellY < kMazeRowsY; CellY++) // Rows
+	{
+		for (size_t CellX = 0; CellX < kMazeColumnsX; CellX++) // Columns
+		{
+			if (map[CellY][CellX] == '.' && !(CellY == playerY && CellX == playerX))
+			{
+				emptySpaces++;
+			}
+		}
+	}
+
+	// Choose random empty space
+	srand(time(0));
+	int emptyTarget = rand() % emptySpaces + 1;
+
+	// Loop through empty spaces till Target is reached and place Goal
+	int emptyCount = 0;
+	for (size_t CellY = 0; CellY < kMazeRowsY; CellY++) // Rows
+	{
+		for (size_t CellX = 0; CellX < kMazeColumnsX; CellX++) // Columns
+		{
+			if (map[CellY][CellX] == '.' && !(CellY == playerY && CellX == playerX))
+			{
+				emptyCount++;
+				if (emptyCount == emptyTarget)
+				{
+					map[CellY][CellX] = 'G';
+					return;
+				}
+			}
+		}
+	}
+}
+
 void canMoveThere(EKeyPressed keypressed)
 {
 	switch (keypressed)
@@ -110,19 +162,19 @@ void canMoveThere(EKeyPressed keypressed)
 	case EKeyPressed::eNone:
 		break;
 	case EKeyPressed::eLeft:
-		if (map[playerY][playerX - 1] == 'G') { cout << "Win" << endl; }
+		if (map[playerY][playerX - 1] == 'G') { gameWon(); }
 		if (map[playerY][playerX - 1] != '.' && map[playerY][playerX - 1] != 'G') { canMove = false; }
 		break;
 	case EKeyPressed::eUp:
-		if (map[playerY - 1][playerX] == 'G') { cout << "Win" << endl; }
+		if (map[playerY - 1][playerX] == 'G') { gameWon(); }
 		if (map[playerY - 1][playerX] != '.' && map[playerY - 1][playerX] != 'G') { canMove = false; }
 		break;
 	case EKeyPressed::eRight:
-		if (map[playerY][playerX + 1] == 'G') { cout << "Win" << endl; }
+		if (map[playerY][playerX + 1] == 'G') { gameWon(); }
 		if (map[playerY][playerX + 1] != '.' && map[playerY][playerX + 1] != 'G') { canMove = false; }
 		break;
 	case EKeyPressed::eDown:
-		if (map[playerY + 1][playerX] == 'G') { cout << "Win" << endl; }
+		if (map[playerY + 1][playerX] == 'G') { gameWon(); }
 		if (map[playerY + 1][playerX] != '.' && map[playerY + 1][playerX] != 'G') { canMove = false; }
 		break;
 	default:
@@ -161,12 +213,15 @@ void movement()
 int main()
 {
 	initializePlayer();
+	StartClock();
 	while (UpdateFramework())
 	{
 		drawMaze();
 		drawPlayer();
 		movement();
+
 		canMove = true;
+		cout << GetElapsedTime() << endl;
 	}
 	return 0;
 }
